@@ -6,22 +6,22 @@ library(readr)
 library(tablesgg)
 library(tables)
 #Load Data
-global_20cr <- read_csv('./data/raw/20cr.csv') %>% as.data.table()
-global_era20 <- read_csv('./data/raw/era20.csv') %>% as.data.table()
-global_era5 <- read_csv('./data/raw/era5.csv') %>% as.data.table()
-global_ncep <- read_csv('./data/raw/ncep.csv') %>% as.data.table()
+global_20cr <- read_csv('./../data//20cr.csv') %>% as.data.table()
+global_era20 <- read_csv('./../data/era20.csv') %>% as.data.table()
+global_era5 <- read_csv('./../data/era5.csv') %>% as.data.table()
+global_ncep <- read_csv('./../data/ncep.csv') %>% as.data.table()
 #Plot All
 p00 <- ggplot(global_20cr, aes(x = mean(E), y = mean(P))) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "#377eb8", size = 2) +
   geom_abline(slope = -1, intercept = 2270, linetype = "dashed", color = "#4daf4a", size = 2) +
   geom_abline(slope = -1, intercept = 2100, linetype = "dashed", color = "#4daf4a", size = 2) +
-  geom_text(label = "20CR v3", size = 10, vjust = -1.5) +
+  geom_text(label = "20CRv3", size = 10, vjust = -1.5) +
   geom_point(shape = 8, size = 5) +
-  geom_text(data = global_era20, label = "ERA-20C", vjust = -0.5, hjust = 1, size = 10) +
+  geom_text(data = global_era20, label = "ERA20C", vjust = -0.5, hjust = 1, size = 10) +
   geom_point(data = global_era20, shape = 8, size = 5) +
   geom_text(data = global_era5, label = "ERA5", vjust = -0.5, hjust = 1, size = 10) +
   geom_point(data = global_era5, shape = 8, size = 5) +
-  geom_text(data = global_ncep, label = "NCEP/NCAR R1", vjust = 1.5, hjust = -0.01, size = 10) +
+  geom_text(data = global_ncep, label = "NCEP1", vjust = 1.5, hjust = -0.01, size = 10) +
   geom_point(data = global_ncep, shape = 8, size = 5) +
   annotate("text", x = 1075, y = 1075, label = "P = E", angle = 45, vjust = -0.5, color = "#377eb8", size = 10) +
   annotate("text", x = 1080, y = 1080, label = "Atmosphere stable", angle = 45, vjust = 1.5, color = "#377eb8", size = 10) +
@@ -58,7 +58,7 @@ p01 <- ggplot(global_20cr, aes(x = mean(E), y = mean(P), label = as.factor(paste
   theme(panel.grid.minor = element_blank(), aspect.ratio = 1, plot.tag = element_text(size = 24), plot.title = element_text(size=28), axis.text = element_text(size = 24), axis.title = element_text(size = 28), panel.border = element_rect(colour = "black", size=2)) +
   scale_x_continuous(limits = c(1155, 1195), expand = c(0,0), breaks = seq(1150, 1190, 20)) +
   scale_y_continuous(limits = c(1095, 1135), expand = c(0,0), breaks = seq(1110, 1150, 20)) +
-  labs(x = NULL, y = NULL, title = "20CR v3", tag = "B")
+  labs(x = NULL, y = NULL, title = "20CRv3", tag = "B")
 
 #Plots ERA20C
 p02 <- ggplot(global_era20, aes(x = mean(E), y = mean(P), label = as.factor(paste(range(Year), collapse = "-")))) + 
@@ -79,7 +79,7 @@ p02 <- ggplot(global_era20, aes(x = mean(E), y = mean(P), label = as.factor(past
   theme(panel.grid.minor = element_blank(), aspect.ratio = 1, plot.tag = element_text(size = 24), plot.title = element_text(size=28), axis.text = element_text(size = 24), axis.title = element_text(size = 28), panel.border = element_rect(colour = "black", size=2)) +
   scale_x_continuous(limits = c(1005, 1045), expand = c(0,0), breaks = seq(1020, 1040, 20)) +
   scale_y_continuous(limits = c(1005, 1045), expand = c(0,0), breaks = seq(1020, 1040, 20)) +
-  labs(x = NULL, y = NULL, title = "ERA-20C", tag = "C")
+  labs(x = NULL, y = NULL, title = "ERA20C", tag = "C")
 
 #Plots ERA5
 p03 <- ggplot(global_era5, aes(x = mean(E), y = mean(P), label = as.factor(paste(range(Year), collapse = "-")))) + 
@@ -115,7 +115,7 @@ p04 <- ggplot(global_ncep, aes(x = mean(E), y = mean(P), label = as.factor(paste
   theme(panel.grid.minor = element_blank(), aspect.ratio = 1, plot.tag = element_text(size = 24), plot.title = element_text(size=28), axis.text = element_text(size = 24), axis.title = element_text(size = 28), panel.border = element_rect(colour = "black", size=2)) +
   scale_x_continuous(limits = c(1005, 1045), expand = c(0,0), breaks = seq(1020, 1040, 20)) +
   scale_y_continuous(limits = c(995, 1035), expand = c(0,0), breaks = seq(1010, 1030, 20)) +
-  labs(x = NULL, y = NULL, title = "NCEP/NCAR R1", tag = "E")
+  labs(x = NULL, y = NULL, title = "NCEP1", tag = "E")
 
 yleft = grid::textGrob("P [mm/yr]", rot=90, gp = grid::gpar(fontsize = 24))
 xdown = grid::textGrob("E [mm/yr]", gp = grid::gpar(fontsize = 24))
@@ -124,7 +124,7 @@ xdown = grid::textGrob("E [mm/yr]", gp = grid::gpar(fontsize = 24))
 p05 <- gridExtra::grid.arrange(p01, p02, p03, p04, ncol = 2) #, left = yleft, bottom = xdown
 p06 <- gridExtra::grid.arrange(p00, p05, widths = c(1.5,2))
 
-ggsave("fig02.pdf", p06, dpi = 600, width = 8.15*3.5, height = 8.15*2, units = "in", device = cairo_pdf)
+ggsave("./../plots/PvE.pdf", p06, dpi = 600, width = 8.15*3.5, height = 8.15*2)
 
 
 

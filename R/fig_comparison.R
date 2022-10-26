@@ -4,10 +4,14 @@ library(dplyr)
 library(data.table)
 library(tidyverse)
 #Load Data
-global_20cr <- read_csv('./data/raw/20cr.csv') %>% as.data.table()
-global_era20 <- read_csv('./data/raw/era20.csv') %>% as.data.table()
-global_era5 <- read_csv('./data/raw/era5.csv') %>% as.data.table()
-global_ncep <- read_csv('./data/raw/ncep.csv') %>% as.data.table()
+global_20cr <- read_csv('./../data/20cr.csv') %>% as.data.table() %>% 
+  .[, PpE := P + E] %>% .[, PmE := P - E]
+global_era20 <- read_csv('./../data/era20.csv') %>% as.data.table() %>% 
+  .[, PpE := P + E] %>% .[, PmE := P - E]
+global_era5 <- read_csv('./../data/era5.csv') %>% as.data.table() %>% 
+  .[, PpE := P + E] %>% .[, PmE := P - E]
+global_ncep <- read_csv('./../data/ncep.csv') %>% as.data.table() %>%
+  .[, PpE := P + E] %>% .[, PmE := P - E]
 #Plots 20CRv3
 range_PmE_20cr <- max(global_20cr$PmE) - min(global_20cr$PmE)
 min_PmE_20cr <- min(global_20cr$PmE)
@@ -127,8 +131,4 @@ p00 <- gridExtra::grid.arrange(p01, p03, p05, p07, ncol = 1,right = yright, left
 p09 <- gridExtra::grid.arrange(p02, p04, p06, p08, ncol = 1,right = yright, left = yleft2, padding = unit(1, "line"))
 p10 <- gridExtra::grid.arrange(p00, p09, ncol = 2)
 
-ggsave("fig01.pdf", p10, dpi = 600, width = 8.15*2, height = 4.78*4, units = "in")
-
-
-
-
+ggsave("./../plots/comparison.pdf", p10, dpi = 600, width = 8.15*2, height = 5.01*2)
