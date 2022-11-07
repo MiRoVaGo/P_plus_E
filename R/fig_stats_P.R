@@ -77,8 +77,8 @@ p00 <- copy(global_cor)
 p00 <- p00[, `p-value` := formatC(cor.test(P.y, P.x)$p.value, format = "e",
                                   digits = 0), by = .(sims, obs)
            ][, RMSE := round(rmse(P.y, P.x), 3), by = .(sims, obs)
-             ][, R2 := round((cor(P.y, P.x)^2), 3), by = .(sims, obs)
-               ][, .(obs, sims, R2, `p-value`, RMSE)] %>%
+             ][, `R-squared` := round((cor(P.y, P.x)^2), 3), by = .(sims, obs)
+               ][, .(obs, sims, `R-squared`, `p-value`, RMSE)] %>%
   unique() %>% setnames("obs", "Observations") %>% 
   setnames("sims", "Reanalyses") %>%
   tableGrob(rows = NULL, theme = ttheme_minimal(base_size = 16))
